@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Form, Button, Container, Card, Row, Col } from "react-bootstrap";
+import { Form, Button, Container, Card, Row, Col, Alert } from "react-bootstrap";
+import { useNavigate } from "react-router";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -7,6 +8,9 @@ const Register = () => {
     name: "",
     password: "",
   });
+
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -17,20 +21,29 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); 
 
     try {
       const response = await fetch("https://offers-api.digistos.com/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Accept": "application/json", 
         },
         body: JSON.stringify(formData),
       });
+      
 
-      const data = await response.json();
-      console.log("Réponse du serveur :", data);
-    } catch (error) {
-      console.error("Erreur lors de l'inscription :", error);
+      if (!response.ok) {
+        const data = await response.json();
+        setError(data.message || "Erreur lors de l'inscription.");
+        return;
+      }
+
+      navigate("/login");
+    } catch (err) {
+      console.error("Erreur serveur :", err);
+      setError("Une erreur est survenue. Veuillez réessayer.");
     }
   };
 
@@ -40,6 +53,9 @@ const Register = () => {
         <Col xs={12} sm={8} md={6} lg={4}>
           <Card className="p-4 shadow-lg">
             <h2 className="text-center mb-4">Créer un compte</h2>
+            
+            {error && <Alert variant="danger">{error}</Alert>}
+
             <Form onSubmit={handleSubmit}>
               <Form.Group className="mb-3" controlId="formEmail">
                 <Form.Label>Email</Form.Label>
