@@ -15,12 +15,23 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle signup logic here
-    // Don't forget to handle errors, both for yourself (dev) and for the client (via a Bootstrap Alert)
-    // Redirect to Login on success
-    console.log("Form submitted:", formData);
+
+    try {
+      const response = await fetch("https://offers-api.digistos.com/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      console.log("Réponse du serveur :", data);
+    } catch (error) {
+      console.error("Erreur lors de l'inscription :", error);
+    }
   };
 
   return (
