@@ -21,7 +21,6 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); 
 
     try {
       const response = await fetch("https://offers-api.digistos.com/api/auth/register", {
@@ -32,18 +31,16 @@ const Register = () => {
         },
         body: JSON.stringify(formData),
       });
-      
 
       if (!response.ok) {
         const data = await response.json();
-        setError(data.message || "Erreur lors de l'inscription.");
-        return;
+        throw new Error(data.message || "Erreur lors de l'inscription.");
       }
 
       navigate("/login");
     } catch (err) {
       console.error("Erreur serveur :", err);
-      setError("Une erreur est survenue. Veuillez réessayer.");
+      setError(err.message || "Une erreur est survenue.");
     }
   };
 
@@ -53,7 +50,7 @@ const Register = () => {
         <Col xs={12} sm={8} md={6} lg={4}>
           <Card className="p-4 shadow-lg">
             <h2 className="text-center mb-4">Créer un compte</h2>
-            
+
             {error && <Alert variant="danger">{error}</Alert>}
 
             <Form onSubmit={handleSubmit}>
