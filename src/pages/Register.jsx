@@ -31,7 +31,7 @@ const Register = () => {
         },
         body: JSON.stringify(formData),
       });
-
+      
       if (!response.ok) {
         const data = await response.json();
         throw new Error(data.message || "Erreur lors de l'inscription.");
@@ -41,7 +41,7 @@ const Register = () => {
     } catch (err) {
       console.error("Erreur serveur :", err);
       setError("Une erreur est survenue. Veuillez réessayer.");
-    }    
+    }
   };
 
   return (
@@ -50,7 +50,7 @@ const Register = () => {
         <Col xs={12} sm={8} md={6} lg={4}>
           <Card className="p-4 shadow-lg">
             <h2 className="text-center mb-4">Créer un compte</h2>
-
+            
             {error && <Alert variant="danger">{error}</Alert>}
 
             <Form onSubmit={handleSubmit}>
@@ -97,5 +97,6 @@ const Register = () => {
     </Container>
   );
 };
+
 
 export default Register;
