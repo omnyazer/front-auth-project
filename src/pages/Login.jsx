@@ -33,14 +33,21 @@ const LoginPage = () => {
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.message || "Identifiants invalides");
+        const err = new Error(data.message || "Une erreur est survenue lors de la connexion.");
+        err.status = response.status; 
+        throw err;
       }
 
       navigate("/offres/professionnelles");
 
     } catch (err) {
       console.error("Erreur de connexion :", err);
-      setError("Impossible de vous connecter. Vérifiez vos identifiants.");
+
+      if (err.status === 401) {
+        setError("Identifiants incorrects.");
+      } else {
+        setError("Une erreur est survenue. Veuillez réessayer.");
+      }
     }
   };
 
