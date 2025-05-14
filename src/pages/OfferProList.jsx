@@ -10,17 +10,21 @@ const OfferProList = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        const auth = JSON.parse(localStorage.getItem("auth"));
+        const token = auth?.token;
+
         const response = await fetch(
           "https://offers-api.digistos.com/api/offers/pro",
           {
             headers: {
               Accept: "application/json",
-              // Add Authorization token
+              Authorization: `Bearer ${token}`,
             },
           }
         );
 
         const { data: offers, message } = await response.json();
+
         if (!response.ok) {
           throw { status: response.status, message: message };
         }
@@ -44,6 +48,7 @@ const OfferProList = () => {
   if (loading) {
     return <Spinner animation="border" className="d-block mx-auto mt-5" />;
   }
+
   if (error) {
     return (
       <Alert variant="danger" className="mt-5 text-center">
