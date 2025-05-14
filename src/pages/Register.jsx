@@ -40,8 +40,8 @@ const Register = () => {
       navigate("/login");
     } catch (err) {
       console.error("Erreur serveur :", err);
-      setError(err.message || "Une erreur est survenue.");
-    }
+      setError("Une erreur est survenue. Veuillez réessayer.");
+    }    
   };
 
   return (
