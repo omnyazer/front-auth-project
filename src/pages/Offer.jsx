@@ -11,11 +11,15 @@ const Offer = () => {
   useEffect(() => {
     const fetchOffer = async () => {
       try {
+        const auth = JSON.parse(localStorage.getItem("auth"));
+        const token = auth?.token;
+
         const response = await fetch(
           `https://offers-api.digistos.com/api/offers/${id}`,
           {
             headers: {
               Accept: "application/json",
+              ...(token ? { Authorization: `Bearer ${token}` } : {}),
             },
           }
         );
