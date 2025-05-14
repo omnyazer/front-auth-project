@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Container, Card, Spinner, Alert } from "react-bootstrap";
 
@@ -11,26 +11,22 @@ const Offer = () => {
   useEffect(() => {
     const fetchOffer = async () => {
       try {
-        const auth = JSON.parse(localStorage.getItem("auth"));
-        const token = auth?.token;
-
         const response = await fetch(
           `https://offers-api.digistos.com/api/offers/${id}`,
           {
             headers: {
               Accept: "application/json",
-              ...(token && { Authorization: `Bearer ${token}` }), 
             },
           }
         );
 
-        const data = await response.json();
+        const { data: offerData, message } = await response.json();
 
         if (!response.ok) {
-          throw { status: response.status, message: data.message };
+          throw { status: response.status, message };
         }
 
-        setOffer(data);
+        setOffer(offerData);
       } catch (err) {
         if (err.status === 401) {
           setError("Accès non autorisé (401).");
@@ -46,17 +42,15 @@ const Offer = () => {
     fetchOffer();
   }, [id]);
 
-  if (loading) {
+  if (loading)
     return <Spinner animation="border" className="d-block mx-auto mt-5" />;
-  }
 
-  if (error) {
+  if (error)
     return (
       <Alert variant="danger" className="mt-5 text-center">
         {error}
       </Alert>
     );
-  }
 
   return (
     <Container className="mt-5">
