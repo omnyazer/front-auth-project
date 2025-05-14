@@ -19,7 +19,7 @@ const Offer = () => {
           {
             headers: {
               Accept: "application/json",
-              ...(token ? { Authorization: `Bearer ${token}` } : {}),
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -46,15 +46,17 @@ const Offer = () => {
     fetchOffer();
   }, [id]);
 
-  if (loading)
+  if (loading) {
     return <Spinner animation="border" className="d-block mx-auto mt-5" />;
+  }
 
-  if (error)
+  if (error) {
     return (
       <Alert variant="danger" className="mt-5 text-center">
         {error}
       </Alert>
     );
+  }
 
   return (
     <Container className="mt-5">
