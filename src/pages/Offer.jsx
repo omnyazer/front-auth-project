@@ -19,7 +19,7 @@ const Offer = () => {
           {
             headers: {
               Accept: "application/json",
-              Authorization: `Bearer ${token}`,
+              ...(token && { Authorization: `Bearer ${token}` }), 
             },
           }
         );
