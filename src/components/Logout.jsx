@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../store/authSlice";
 
@@ -28,7 +28,8 @@ const Logout = () => {
     };
 
     handleLogout();
-  }, [token, dispatch, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token, navigate]); 
 
   return null;
 };

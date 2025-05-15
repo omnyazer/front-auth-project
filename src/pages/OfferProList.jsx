@@ -7,7 +7,6 @@ const OfferProList = () => {
   const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const token = useSelector((state) => state.auth.token);
 
   useEffect(() => {
@@ -25,7 +24,7 @@ const OfferProList = () => {
 
         const { data: offers, message } = await response.json();
         if (!response.ok) {
-          throw { status: response.status, message: message };
+          throw { status: response.status, message };
         }
 
         setOffers(offers);
@@ -44,17 +43,14 @@ const OfferProList = () => {
     fetchProducts();
   }, [token]);
 
-  if (loading) {
+  if (loading)
     return <Spinner animation="border" className="d-block mx-auto mt-5" />;
-  }
-
-  if (error) {
+  if (error)
     return (
       <Alert variant="danger" className="mt-5 text-center">
         {error}
       </Alert>
     );
-  }
 
   return <OfferList offers={offers} />;
 };

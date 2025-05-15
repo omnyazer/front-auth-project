@@ -1,29 +1,20 @@
-import React from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
-import { Link } from "react-router";
+import { useNavigate, Outlet } from "react-router-dom";
+import { useEffect } from "react";
+import {  useSelector } from "react-redux";
 
-const OfferList = ({ offers }) => {
-  return (
-    <Container className="mt-4">
-      <h2 className="mb-4">Liste des Produits</h2>
-      <Row>
-        {offers.map((offer) => (
-          <Col md={4} sm={6} xs={12} key={offer.id} className="mb-4">
-            <Link to={`/offre/${offer.id}`} className="text-decoration-none">
-              <Card>
-                <Card.Body>
-                  <Card.Title>{offer.name}</Card.Title>
-                  <Card.Text>
-                    <strong>{offer.price}€</strong>
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Link>
-          </Col>
-        ))}
-      </Row>
-    </Container>
-  );
+const PrivateRoute = () => {
+  const navigate = useNavigate();
+  const auth = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    const isValid = auth.token && new Date(auth.expiresAt) > new Date();
+
+    if (!isValid) {
+      navigate("/connexion");
+    }
+  }, [auth, navigate]);
+
+  return <Outlet />;
 };
 
-export default OfferList;
+export default PrivateRoute;
