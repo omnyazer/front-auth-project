@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Form, Button, Container, Card, Row, Col, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../store/authSlice";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +12,7 @@ const LoginPage = () => {
 
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFormData({
@@ -37,6 +40,15 @@ const LoginPage = () => {
         err.status = response.status; 
         throw err;
       }
+
+      const data = await response.json();
+
+      dispatch(
+        loginSuccess({
+          token: data.access_token,
+          expiresAt: new Date(Date.now() + data.expires_in * 1000).toISOString(),
+        })
+      );
 
       navigate("/offres/professionnelles");
 
