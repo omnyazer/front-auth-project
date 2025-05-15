@@ -29,7 +29,7 @@ const Logout = () => {
 
     handleLogout();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token, navigate]); 
+  }, [token, navigate]);
 
   return null;
 };
