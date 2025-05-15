@@ -29,14 +29,18 @@ const LoginPage = () => {
           "Accept": "application/json",
         },
         body: JSON.stringify(formData),
+        credentials: "include", 
       });
 
       if (!response.ok) {
         const data = await response.json();
         const err = new Error(data.message || "Une erreur est survenue lors de la connexion.");
-        err.status = response.status; 
+        err.status = response.status;
         throw err;
       }
+
+      const expirationDate = new Date(Date.now() + 60 * 60 * 1000); 
+      localStorage.setItem("expiresAt", expirationDate.toISOString());
 
       navigate("/offres/professionnelles");
 
